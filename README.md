@@ -2,17 +2,18 @@
 
 A modern Discord bot built with Node.js and discord.js v14.
 
-## Commands
+## 100 Slash Commands
 
-**Utility:** `/ping`, `/help`, `/avatar`, `/userinfo`, `/serverinfo`, `/botinfo`, `/membercount`, `/roleinfo`, `/channelinfo`
+vxnrk includes exactly **100 commands** across:
 
-**Fun:** `/coinflip`, `/dice`, `/eightball`, `/poll`
+- Utility and information
+- Moderation and server management
+- Fun and text tools
+- Tickets, suggestions, reports, applications and giveaways
+- Economy, profiles and leveling
+- Roles, channels and voice management
 
-**Management:** `/say`, `/announce`, `/clear`, `/slowmode`, `/lock`, `/unlock`, `/nick`
-
-**Moderation:** `/warn`, `/warnings`, `/timeout`, `/untimeout`, `/kick`, `/ban`, `/unban`
-
-> Warnings are stored in memory and reset whenever the bot restarts.
+Use `/help` inside Discord to view the full categorized command list.
 
 ## Setup
 
@@ -20,8 +21,8 @@ A modern Discord bot built with Node.js and discord.js v14.
 2. Clone this repository.
 3. Run `npm install`.
 4. Copy `.env.example` to `.env`.
-5. Add your bot token, application ID, and test server ID.
-6. Run `npm run deploy` to register slash commands.
+5. Add your bot token, application ID and test server ID.
+6. Run `npm run deploy`.
 7. Run `npm start`.
 
 Never upload your real `.env` or bot token to GitHub.

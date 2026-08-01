@@ -2,70 +2,105 @@ const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 const commands = [
   new SlashCommandBuilder().setName('ping').setDescription('Check the bot latency'),
-  new SlashCommandBuilder().setName('help').setDescription('Show every vxnrk command'),
-  new SlashCommandBuilder().setName('avatar').setDescription("Show a user's avatar")
-    .addUserOption(o => o.setName('user').setDescription('User to view')),
-  new SlashCommandBuilder().setName('userinfo').setDescription('Show information about a user')
-    .addUserOption(o => o.setName('user').setDescription('User to view')),
+  new SlashCommandBuilder().setName('help').setDescription('Show all vxnrk commands'),
+  new SlashCommandBuilder().setName('avatar').setDescription("Show a user's avatar").addUserOption(o => o.setName('user').setDescription('Target user')),
+  new SlashCommandBuilder().setName('userinfo').setDescription('Show information about a user').addUserOption(o => o.setName('user').setDescription('Target user')),
   new SlashCommandBuilder().setName('serverinfo').setDescription('Show server information'),
   new SlashCommandBuilder().setName('botinfo').setDescription('Show bot information'),
   new SlashCommandBuilder().setName('membercount').setDescription('Show the server member count'),
-  new SlashCommandBuilder().setName('roleinfo').setDescription('Show information about a role')
-    .addRoleOption(o => o.setName('role').setDescription('Role to view').setRequired(true)),
-  new SlashCommandBuilder().setName('channelinfo').setDescription('Show information about a channel')
-    .addChannelOption(o => o.setName('channel').setDescription('Channel to view')),
+  new SlashCommandBuilder().setName('roleinfo').setDescription('Use the roleinfo command').addRoleOption(o => o.setName('role').setDescription('Target role')),
+  new SlashCommandBuilder().setName('channelinfo').setDescription('Use the channelinfo command').addChannelOption(o => o.setName('channel').setDescription('Target channel')),
   new SlashCommandBuilder().setName('coinflip').setDescription('Flip a coin'),
   new SlashCommandBuilder().setName('dice').setDescription('Roll a six-sided die'),
-  new SlashCommandBuilder().setName('eightball').setDescription('Ask the magic 8-ball')
-    .addStringOption(o => o.setName('question').setDescription('Your question').setRequired(true)),
-  new SlashCommandBuilder().setName('poll').setDescription('Create a yes/no poll')
-    .addStringOption(o => o.setName('question').setDescription('Poll question').setRequired(true)),
-  new SlashCommandBuilder().setName('say').setDescription('Make the bot send a message')
-    .addStringOption(o => o.setName('message').setDescription('Message to send').setRequired(true))
-    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
-  new SlashCommandBuilder().setName('announce').setDescription('Send an announcement')
-    .addStringOption(o => o.setName('message').setDescription('Announcement text').setRequired(true))
-    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
-  new SlashCommandBuilder().setName('clear').setDescription('Delete messages')
-    .addIntegerOption(o => o.setName('amount').setDescription('1-100 messages').setMinValue(1).setMaxValue(100).setRequired(true))
-    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
-  new SlashCommandBuilder().setName('slowmode').setDescription('Set channel slowmode')
-    .addIntegerOption(o => o.setName('seconds').setDescription('0-21600 seconds').setMinValue(0).setMaxValue(21600).setRequired(true))
-    .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
-  new SlashCommandBuilder().setName('lock').setDescription('Lock the current channel')
-    .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
-  new SlashCommandBuilder().setName('unlock').setDescription('Unlock the current channel')
-    .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
-  new SlashCommandBuilder().setName('nick').setDescription("Change a member's nickname")
-    .addUserOption(o => o.setName('user').setDescription('Member').setRequired(true))
-    .addStringOption(o => o.setName('nickname').setDescription('New nickname; leave empty to reset'))
-    .setDefaultMemberPermissions(PermissionFlagsBits.ManageNicknames),
-  new SlashCommandBuilder().setName('warn').setDescription('Warn a member')
-    .addUserOption(o => o.setName('user').setDescription('Member').setRequired(true))
-    .addStringOption(o => o.setName('reason').setDescription('Reason').setRequired(true))
-    .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
-  new SlashCommandBuilder().setName('warnings').setDescription("View a member's warnings")
-    .addUserOption(o => o.setName('user').setDescription('Member').setRequired(true))
-    .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
-  new SlashCommandBuilder().setName('timeout').setDescription('Timeout a member')
-    .addUserOption(o => o.setName('user').setDescription('Member').setRequired(true))
-    .addIntegerOption(o => o.setName('minutes').setDescription('Timeout length').setMinValue(1).setMaxValue(40320).setRequired(true))
-    .addStringOption(o => o.setName('reason').setDescription('Reason'))
-    .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
-  new SlashCommandBuilder().setName('untimeout').setDescription("Remove a member's timeout")
-    .addUserOption(o => o.setName('user').setDescription('Member').setRequired(true))
-    .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
-  new SlashCommandBuilder().setName('kick').setDescription('Kick a member')
-    .addUserOption(o => o.setName('user').setDescription('Member').setRequired(true))
-    .addStringOption(o => o.setName('reason').setDescription('Reason'))
-    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
-  new SlashCommandBuilder().setName('ban').setDescription('Ban a member')
-    .addUserOption(o => o.setName('user').setDescription('Member').setRequired(true))
-    .addStringOption(o => o.setName('reason').setDescription('Reason'))
-    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
-  new SlashCommandBuilder().setName('unban').setDescription('Unban a user by ID')
-    .addStringOption(o => o.setName('user_id').setDescription('Discord user ID').setRequired(true))
-    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
+  new SlashCommandBuilder().setName('eightball').setDescription('Ask the magic 8-ball').addStringOption(o => o.setName('question').setDescription('Your question').setRequired(true)),
+  new SlashCommandBuilder().setName('poll').setDescription('Create a yes/no poll').addStringOption(o => o.setName('question').setDescription('Poll question').setRequired(true)),
+  new SlashCommandBuilder().setName('say').setDescription('Make the bot send a message').addStringOption(o => o.setName('message').setDescription('Message to send').setRequired(true)).setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
+  new SlashCommandBuilder().setName('announce').setDescription('Send an announcement').addStringOption(o => o.setName('message').setDescription('Announcement text').setRequired(true)).setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+  new SlashCommandBuilder().setName('clear').setDescription('Delete messages').addIntegerOption(o => o.setName('amount').setDescription('Number').setMinValue(1).setMaxValue(100).setRequired(true)).setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
+  new SlashCommandBuilder().setName('slowmode').setDescription('Set channel slowmode').addIntegerOption(o => o.setName('seconds').setDescription('Number').setMinValue(0).setMaxValue(21600).setRequired(true)).setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
+  new SlashCommandBuilder().setName('lock').setDescription('Lock the current channel').setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
+  new SlashCommandBuilder().setName('unlock').setDescription('Unlock the current channel').setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
+  new SlashCommandBuilder().setName('nick').setDescription('Use the nick command').addStringOption(o => o.setName('nickname').setDescription('New nickname')).setDefaultMemberPermissions(PermissionFlagsBits.ManageNicknames),
+  new SlashCommandBuilder().setName('warn').setDescription('Warn a member').addUserOption(o => o.setName('user').setDescription('Target user')).addStringOption(o => o.setName('reason').setDescription('Reason')).setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
+  new SlashCommandBuilder().setName('warnings').setDescription("View a member's warnings").addUserOption(o => o.setName('user').setDescription('Target user')).setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
+  new SlashCommandBuilder().setName('timeout').setDescription('Timeout a member').addUserOption(o => o.setName('user').setDescription('Target user')).addIntegerOption(o => o.setName('minutes').setDescription('Number').setMinValue(1).setMaxValue(40320).setRequired(true)).addStringOption(o => o.setName('reason').setDescription('Reason')).setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
+  new SlashCommandBuilder().setName('untimeout').setDescription('Remove a member timeout').addUserOption(o => o.setName('user').setDescription('Target user')).setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
+  new SlashCommandBuilder().setName('kick').setDescription('Kick a member').addUserOption(o => o.setName('user').setDescription('Target user')).addStringOption(o => o.setName('reason').setDescription('Reason')).setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
+  new SlashCommandBuilder().setName('ban').setDescription('Ban a member').addUserOption(o => o.setName('user').setDescription('Target user')).addStringOption(o => o.setName('reason').setDescription('Reason')).setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
+  new SlashCommandBuilder().setName('unban').setDescription('Unban a user by ID').addStringOption(o => o.setName('user_id').setDescription('Discord user ID').setRequired(true)).setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
+  new SlashCommandBuilder().setName('servericon').setDescription('Use the servericon command'),
+  new SlashCommandBuilder().setName('banner').setDescription('Use the banner command'),
+  new SlashCommandBuilder().setName('roles').setDescription('Use the roles command'),
+  new SlashCommandBuilder().setName('channels').setDescription('Use the channels command'),
+  new SlashCommandBuilder().setName('emojis').setDescription('Use the emojis command'),
+  new SlashCommandBuilder().setName('boosts').setDescription('Use the boosts command'),
+  new SlashCommandBuilder().setName('uptime').setDescription('Use the uptime command'),
+  new SlashCommandBuilder().setName('invite').setDescription('Use the invite command'),
+  new SlashCommandBuilder().setName('permissions').setDescription('Use the permissions command'),
+  new SlashCommandBuilder().setName('joined').setDescription('Use the joined command').addUserOption(o => o.setName('user').setDescription('Target user')),
+  new SlashCommandBuilder().setName('created').setDescription('Use the created command'),
+  new SlashCommandBuilder().setName('whois').setDescription('Use the whois command').addUserOption(o => o.setName('user').setDescription('Target user')),
+  new SlashCommandBuilder().setName('randomuser').setDescription('Use the randomuser command'),
+  new SlashCommandBuilder().setName('randomnumber').setDescription('Use the randomnumber command').addIntegerOption(o => o.setName('maximum').setDescription('Number').setMinValue(1).setMaxValue(1000000).setRequired(true)),
+  new SlashCommandBuilder().setName('choose').setDescription('Use the choose command').addStringOption(o => o.setName('choices').setDescription('Choices separated by commas').setRequired(true)),
+  new SlashCommandBuilder().setName('rate').setDescription('Use the rate command').addIntegerOption(o => o.setName('maximum').setDescription('Number').setMinValue(1).setMaxValue(100).setRequired(true)),
+  new SlashCommandBuilder().setName('ship').setDescription('Use the ship command'),
+  new SlashCommandBuilder().setName('rps').setDescription('Use the rps command'),
+  new SlashCommandBuilder().setName('joke').setDescription('Use the joke command'),
+  new SlashCommandBuilder().setName('fact').setDescription('Use the fact command'),
+  new SlashCommandBuilder().setName('quote').setDescription('Use the quote command'),
+  new SlashCommandBuilder().setName('reverse').setDescription('Use the reverse command').addStringOption(o => o.setName('text').setDescription('Text to reverse').setRequired(true)),
+  new SlashCommandBuilder().setName('uppercase').setDescription('Use the uppercase command').addStringOption(o => o.setName('text').setDescription('Text to uppercase').setRequired(true)),
+  new SlashCommandBuilder().setName('lowercase').setDescription('Use the lowercase command').addStringOption(o => o.setName('text').setDescription('Text to lowercase').setRequired(true)),
+  new SlashCommandBuilder().setName('length').setDescription('Use the length command').addStringOption(o => o.setName('text').setDescription('Text to measure').setRequired(true)),
+  new SlashCommandBuilder().setName('timestamp').setDescription('Use the timestamp command'),
+  new SlashCommandBuilder().setName('remind').setDescription('Use the remind command').addStringOption(o => o.setName('message').setDescription('Reminder message').setRequired(true)),
+  new SlashCommandBuilder().setName('afk').setDescription('Use the afk command').addStringOption(o => o.setName('reason').setDescription('AFK reason').setRequired(true)),
+  new SlashCommandBuilder().setName('snipe').setDescription('Use the snipe command'),
+  new SlashCommandBuilder().setName('weather').setDescription('Use the weather command').addStringOption(o => o.setName('location').setDescription('Location').setRequired(true)),
+  new SlashCommandBuilder().setName('calculator').setDescription('Use the calculator command').addStringOption(o => o.setName('expression').setDescription('Math expression').setRequired(true)),
+  new SlashCommandBuilder().setName('translate').setDescription('Use the translate command').addStringOption(o => o.setName('text').setDescription('Text to translate').setRequired(true)),
+  new SlashCommandBuilder().setName('define').setDescription('Use the define command').addStringOption(o => o.setName('word').setDescription('Word to define').setRequired(true)),
+  new SlashCommandBuilder().setName('addrole').setDescription('Use the addrole command').addUserOption(o => o.setName('user').setDescription('Target user')).addRoleOption(o => o.setName('role').setDescription('Target role')).setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),
+  new SlashCommandBuilder().setName('removerole').setDescription('Use the removerole command').addUserOption(o => o.setName('user').setDescription('Target user')).addRoleOption(o => o.setName('role').setDescription('Target role')).setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),
+  new SlashCommandBuilder().setName('createrole').setDescription('Use the createrole command').addStringOption(o => o.setName('name').setDescription('Role name').setRequired(true)).setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),
+  new SlashCommandBuilder().setName('deleterole').setDescription('Use the deleterole command').addRoleOption(o => o.setName('role').setDescription('Target role')).setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),
+  new SlashCommandBuilder().setName('createchannel').setDescription('Use the createchannel command').addStringOption(o => o.setName('name').setDescription('Channel name').setRequired(true)).setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
+  new SlashCommandBuilder().setName('deletechannel').setDescription('Use the deletechannel command').addChannelOption(o => o.setName('channel').setDescription('Target channel')).setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
+  new SlashCommandBuilder().setName('renamechannel').setDescription('Use the renamechannel command').addChannelOption(o => o.setName('channel').setDescription('Target channel')).addStringOption(o => o.setName('name').setDescription('New channel name').setRequired(true)).setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
+  new SlashCommandBuilder().setName('move').setDescription('Use the move command').addUserOption(o => o.setName('user').setDescription('Target user')).setDefaultMemberPermissions(PermissionFlagsBits.MoveMembers),
+  new SlashCommandBuilder().setName('voicekick').setDescription('Use the voicekick command').addUserOption(o => o.setName('user').setDescription('Target user')).setDefaultMemberPermissions(PermissionFlagsBits.MoveMembers),
+  new SlashCommandBuilder().setName('mute').setDescription('Use the mute command').addUserOption(o => o.setName('user').setDescription('Target user')).setDefaultMemberPermissions(PermissionFlagsBits.MuteMembers),
+  new SlashCommandBuilder().setName('unmute').setDescription('Use the unmute command').addUserOption(o => o.setName('user').setDescription('Target user')).setDefaultMemberPermissions(PermissionFlagsBits.MuteMembers),
+  new SlashCommandBuilder().setName('purgeuser').setDescription('Use the purgeuser command').addUserOption(o => o.setName('user').setDescription('Target user')).setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
+  new SlashCommandBuilder().setName('softban').setDescription('Use the softban command').addUserOption(o => o.setName('user').setDescription('Target user')).addStringOption(o => o.setName('reason').setDescription('Reason')).setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
+  new SlashCommandBuilder().setName('massban').setDescription('Use the massban command').addStringOption(o => o.setName('user_ids').setDescription('Space-separated user IDs').setRequired(true)).setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
+  new SlashCommandBuilder().setName('modlogs').setDescription('Use the modlogs command').setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
+  new SlashCommandBuilder().setName('clearwarnings').setDescription('Use the clearwarnings command').setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
+  new SlashCommandBuilder().setName('setnick').setDescription('Use the setnick command').addUserOption(o => o.setName('user').setDescription('Target user')).addStringOption(o => o.setName('nickname').setDescription('New nickname').setRequired(true)).setDefaultMemberPermissions(PermissionFlagsBits.ManageNicknames),
+  new SlashCommandBuilder().setName('resetnick').setDescription('Use the resetnick command').addUserOption(o => o.setName('user').setDescription('Target user')).setDefaultMemberPermissions(PermissionFlagsBits.ManageNicknames),
+  new SlashCommandBuilder().setName('deafen').setDescription('Use the deafen command').addUserOption(o => o.setName('user').setDescription('Target user')).setDefaultMemberPermissions(PermissionFlagsBits.DeafenMembers),
+  new SlashCommandBuilder().setName('undeafen').setDescription('Use the undeafen command').addUserOption(o => o.setName('user').setDescription('Target user')).setDefaultMemberPermissions(PermissionFlagsBits.DeafenMembers),
+  new SlashCommandBuilder().setName('ticket').setDescription('Use the ticket command'),
+  new SlashCommandBuilder().setName('closeticket').setDescription('Use the closeticket command').setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
+  new SlashCommandBuilder().setName('addticket').setDescription('Use the addticket command').setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
+  new SlashCommandBuilder().setName('removeticket').setDescription('Use the removeticket command').setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
+  new SlashCommandBuilder().setName('suggest').setDescription('Use the suggest command').addStringOption(o => o.setName('suggestion').setDescription('Your suggestion').setRequired(true)),
+  new SlashCommandBuilder().setName('report').setDescription('Use the report command').addStringOption(o => o.setName('reason').setDescription('Report reason').setRequired(true)).addStringOption(o => o.setName('reason').setDescription('Reason')),
+  new SlashCommandBuilder().setName('application').setDescription('Use the application command').addStringOption(o => o.setName('answer').setDescription('Application answer').setRequired(true)),
+  new SlashCommandBuilder().setName('giveaway').setDescription('Use the giveaway command').addStringOption(o => o.setName('prize').setDescription('Giveaway prize').setRequired(true)).setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+  new SlashCommandBuilder().setName('reroll').setDescription('Use the reroll command').setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+  new SlashCommandBuilder().setName('endgiveaway').setDescription('Use the endgiveaway command').setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+  new SlashCommandBuilder().setName('balance').setDescription('Use the balance command'),
+  new SlashCommandBuilder().setName('daily').setDescription('Use the daily command'),
+  new SlashCommandBuilder().setName('work').setDescription('Use the work command'),
+  new SlashCommandBuilder().setName('pay').setDescription('Use the pay command').addUserOption(o => o.setName('user').setDescription('Target user')).addIntegerOption(o => o.setName('amount').setDescription('Number').setMinValue(1).setMaxValue(100000000).setRequired(true)),
+  new SlashCommandBuilder().setName('leaderboard').setDescription('Use the leaderboard command'),
+  new SlashCommandBuilder().setName('level').setDescription('Use the level command').addUserOption(o => o.setName('user').setDescription('Target user')),
+  new SlashCommandBuilder().setName('rank').setDescription('Use the rank command').addUserOption(o => o.setName('user').setDescription('Target user')),
+  new SlashCommandBuilder().setName('xp').setDescription('Use the xp command').addIntegerOption(o => o.setName('amount').setDescription('Number').setMinValue(1).setMaxValue(1000000).setRequired(true)).setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+  new SlashCommandBuilder().setName('profile').setDescription('Use the profile command').addUserOption(o => o.setName('user').setDescription('Target user')),
+  new SlashCommandBuilder().setName('achievements').setDescription('Use the achievements command')
 ].map(command => command.toJSON());
 
 module.exports = commands;
