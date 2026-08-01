@@ -86,7 +86,7 @@ const commands = [
   new SlashCommandBuilder().setName('addticket').setDescription('Use the addticket command').setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
   new SlashCommandBuilder().setName('removeticket').setDescription('Use the removeticket command').setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
   new SlashCommandBuilder().setName('suggest').setDescription('Use the suggest command').addStringOption(o => o.setName('suggestion').setDescription('Your suggestion').setRequired(true)),
-  new SlashCommandBuilder().setName('report').setDescription('Use the report command').addStringOption(o => o.setName('reason').setDescription('Report reason').setRequired(true)).addStringOption(o => o.setName('reason').setDescription('Reason')),
+  new SlashCommandBuilder().setName('report').setDescription('Use the report command').addStringOption(o => o.setName('reason').setDescription('Report reason').setRequired(true)),
   new SlashCommandBuilder().setName('application').setDescription('Use the application command').addStringOption(o => o.setName('answer').setDescription('Application answer').setRequired(true)),
   new SlashCommandBuilder().setName('giveaway').setDescription('Use the giveaway command').addStringOption(o => o.setName('prize').setDescription('Giveaway prize').setRequired(true)).setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
   new SlashCommandBuilder().setName('reroll').setDescription('Use the reroll command').setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
