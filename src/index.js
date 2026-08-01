@@ -1,26 +1,34 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits, EmbedBuilder, PermissionFlagsBits, ChannelType } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder, PermissionFlagsBits, ChannelType, ActivityType } = require('discord.js');
+const { BRAND, embed, success, error: errorEmbed } = require('./theme');
 if (!process.env.DISCORD_TOKEN) throw new Error('DISCORD_TOKEN is missing from .env');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers] });
 const warnings = new Map(); const balances = new Map(); const startedAt = Date.now();
 const keyFor = (g,u) => `${g}:${u}`; const random = a => a[Math.floor(Math.random()*a.length)];
-client.once('ready',()=>{ console.log(`vxnrk online as ${client.user.tag} with 100 commands`); client.user.setActivity('/help • 100 commands'); });
+client.once('ready',()=>{
+ console.log(`✓ vxnrk online as ${client.user.tag} • ${client.guilds.cache.size} servers • 100 commands`);
+ client.user.setPresence({
+  activities: [{ name: 'your server • /help', type: ActivityType.Watching }],
+  status: 'online'
+ });
+});
 client.on('interactionCreate', async interaction => {
  if(!interaction.isChatInputCommand()) return;
  const {commandName}=interaction; const user=interaction.options.getUser('user')||interaction.user;
  const member=interaction.guild?await interaction.guild.members.fetch(user.id).catch(()=>null):null;
  const reason=interaction.options.getString('reason')||'No reason provided';
  try {
-  if(commandName==='ping') return interaction.reply(`🏓 Pong! ${client.ws.ping}ms`);
+  if(commandName==='ping') return interaction.reply({embeds:[embed(client,{title:'Pong!',description:`🏓 **${client.ws.ping}ms** websocket latency`})]});
   if(commandName==='help'){
-   const groups={Utility:['ping','help','avatar','userinfo','serverinfo','botinfo','membercount','roleinfo','channelinfo','servericon','banner','roles','channels','emojis','boosts','uptime','invite','permissions','joined','created','whois','randomuser','timestamp'],Fun:['coinflip','dice','eightball','randomnumber','choose','rate','ship','rps','joke','fact','quote','reverse','uppercase','lowercase','length'],Management:['poll','say','announce','clear','slowmode','lock','unlock','nick','addrole','removerole','createrole','deleterole','createchannel','deletechannel','renamechannel','move','voicekick'],Moderation:['warn','warnings','timeout','untimeout','kick','ban','unban','mute','unmute','purgeuser','softban','massban','modlogs','clearwarnings','setnick','resetnick','deafen','undeafen'],Community:['ticket','closeticket','addticket','removeticket','suggest','report','application','giveaway','reroll','endgiveaway'],Economy:['balance','daily','work','pay','leaderboard','level','rank','xp','profile','achievements'],Tools:['remind','afk','snipe','weather','calculator','translate','define']};
-   const e=new EmbedBuilder().setColor(0x5865F2).setTitle('vxnrk • 100 Commands').setDescription(Object.entries(groups).map(([k,v])=>`**${k}**\n${v.map(x=>`\`/${x}\``).join(' ')}`).join('\n\n'));
+   const groups={Utility:['ping','avatar','userinfo','serverinfo','botinfo','membercount','roleinfo','channelinfo','servericon','banner','roles','channels','emojis','boosts','uptime','invite','permissions','joined','created','whois','randomuser','timestamp'],Fun:['coinflip','dice','eightball','randomnumber','choose','rate','ship','rps','joke','fact','quote','reverse','uppercase','lowercase','length'],Management:['poll','say','announce','clear','slowmode','lock','unlock','nick','addrole','removerole','createrole','deleterole','createchannel','deletechannel','renamechannel','move','voicekick'],Moderation:['warn','warnings','timeout','untimeout','kick','ban','unban','mute','unmute','purgeuser','softban','massban','modlogs','clearwarnings','setnick','resetnick','deafen','undeafen'],Community:['ticket','closeticket','addticket','removeticket','suggest','report','application','giveaway','reroll','endgiveaway'],Economy:['balance','daily','work','pay','leaderboard','level','rank','xp','profile','achievements'],Tools:['remind','afk','snipe','weather','calculator','translate','define']};
+   const fields=Object.entries(groups).map(([name,list])=>({name:`${name} • ${list.length}`,value:list.map(x=>`\`/${x}\``).join(' ')}));
+   const e=embed(client,{title:'vxnrk Command Center',description:`**100 slash commands** for moderation, management, utility and fun.\n\nUse \`/command\` to run anything below.`,thumbnail:client.user.displayAvatarURL(),fields});
    return interaction.reply({embeds:[e],ephemeral:true});
   }
-  if(commandName==='avatar') return interaction.reply({embeds:[new EmbedBuilder().setColor(0x5865F2).setTitle(`${user.username}'s avatar`).setImage(user.displayAvatarURL({size:1024}))]});
-  if(['userinfo','whois'].includes(commandName)) return interaction.reply({embeds:[new EmbedBuilder().setColor(0x5865F2).setTitle(user.tag).setThumbnail(user.displayAvatarURL()).addFields({name:'User ID',value:user.id},{name:'Created',value:`<t:${Math.floor(user.createdTimestamp/1000)}:R>`},{name:'Joined',value:member?.joinedTimestamp?`<t:${Math.floor(member.joinedTimestamp/1000)}:R>`:'Unknown'})]});
-  if(commandName==='serverinfo'){const g=interaction.guild;return interaction.reply({embeds:[new EmbedBuilder().setColor(0x5865F2).setTitle(g.name).setThumbnail(g.iconURL()).addFields({name:'Members',value:String(g.memberCount),inline:true},{name:'Channels',value:String(g.channels.cache.size),inline:true},{name:'Roles',value:String(g.roles.cache.size),inline:true},{name:'Created',value:`<t:${Math.floor(g.createdTimestamp/1000)}:R>`})]});}
-  if(commandName==='botinfo') return interaction.reply(`🤖 **vxnrk** • 100 commands • discord.js v14 • ${client.guilds.cache.size} servers`);
+  if(commandName==='avatar') return interaction.reply({embeds:[new EmbedBuilder().setColor(BRAND.color).setTitle(`${user.username}'s avatar`).setImage(user.displayAvatarURL({size:1024}))]});
+  if(['userinfo','whois'].includes(commandName)) return interaction.reply({embeds:[new EmbedBuilder().setColor(BRAND.color).setTitle(user.tag).setThumbnail(user.displayAvatarURL()).addFields({name:'User ID',value:user.id},{name:'Created',value:`<t:${Math.floor(user.createdTimestamp/1000)}:R>`},{name:'Joined',value:member?.joinedTimestamp?`<t:${Math.floor(member.joinedTimestamp/1000)}:R>`:'Unknown'})]});
+  if(commandName==='serverinfo'){const g=interaction.guild;return interaction.reply({embeds:[new EmbedBuilder().setColor(BRAND.color).setTitle(g.name).setThumbnail(g.iconURL()).addFields({name:'Members',value:String(g.memberCount),inline:true},{name:'Channels',value:String(g.channels.cache.size),inline:true},{name:'Roles',value:String(g.roles.cache.size),inline:true},{name:'Created',value:`<t:${Math.floor(g.createdTimestamp/1000)}:R>`})]});}
+  if(commandName==='botinfo') return interaction.reply({embeds:[embed(client,{title:'About vxnrk',thumbnail:client.user.displayAvatarURL(),fields:[{name:'Commands',value:'100',inline:true},{name:'Servers',value:String(client.guilds.cache.size),inline:true},{name:'Library',value:'discord.js v14',inline:true},{name:'Uptime',value:`${Math.floor((Date.now()-startedAt)/60000)} minutes`,inline:true}]})]});
   if(commandName==='membercount') return interaction.reply(`👥 **${interaction.guild.memberCount}** members`);
   if(commandName==='servericon') return interaction.reply(interaction.guild.iconURL({size:1024})||'This server has no icon.');
   if(commandName==='banner') return interaction.reply(interaction.guild.bannerURL({size:1024})||'This server has no banner.');
@@ -44,7 +52,7 @@ client.on('interactionCreate', async interaction => {
   if(['reverse','uppercase','lowercase','length'].includes(commandName)){const t=interaction.options.getString('text');const out=commandName==='reverse'?[...t].reverse().join(''):commandName==='uppercase'?t.toUpperCase():commandName==='lowercase'?t.toLowerCase():`${t.length} characters`;return interaction.reply(out);}
   if(commandName==='poll'){const m=await interaction.reply({content:`📊 **${interaction.options.getString('question')}**`,fetchReply:true});await m.react('✅');await m.react('❌');return;}
   if(commandName==='say'){await interaction.channel.send(interaction.options.getString('message'));return interaction.reply({content:'✅ Sent.',ephemeral:true});}
-  if(commandName==='announce'){await interaction.channel.send({embeds:[new EmbedBuilder().setColor(0x5865F2).setTitle('📢 Announcement').setDescription(interaction.options.getString('message')).setTimestamp()]});return interaction.reply({content:'✅ Announcement sent.',ephemeral:true});}
+  if(commandName==='announce'){await interaction.channel.send({embeds:[new EmbedBuilder().setColor(BRAND.color).setTitle('📢 Announcement').setDescription(interaction.options.getString('message')).setTimestamp()]});return interaction.reply({content:'✅ Announcement sent.',ephemeral:true});}
   if(commandName==='clear'){const d=await interaction.channel.bulkDelete(interaction.options.getInteger('amount'),true);return interaction.reply({content:`🧹 Deleted ${d.size} messages.`,ephemeral:true});}
   if(commandName==='slowmode'){await interaction.channel.setRateLimitPerUser(interaction.options.getInteger('seconds'));return interaction.reply('✅ Slowmode updated.');}
   if(['lock','unlock'].includes(commandName)){await interaction.channel.permissionOverwrites.edit(interaction.guild.roles.everyone,{SendMessages:commandName==='lock'?false:null});return interaction.reply(commandName==='lock'?'🔒 Channel locked.':'🔓 Channel unlocked.');}

@@ -26,3 +26,8 @@ Use `/help` inside Discord to view the full categorized command list.
 7. Run `npm start`.
 
 Never upload your real `.env` or bot token to GitHub.
+
+
+## Visual polish
+
+The bot now uses a consistent vxnrk theme, branded embeds, a redesigned `/help` menu, cleaner errors, and a professional presence status.
